@@ -1,0 +1,11 @@
+diff -ur mutter-3.30.0.orig/src/core/display.c mutter-3.30.0/src/core/display.c
+--- mutter-3.30.0.orig/src/core/display.c	2018-08-10 18:59:10.000000000 +0200
++++ mutter-3.30.0/src/core/display.c	2018-09-04 12:29:13.530830840 +0200
+@@ -58,6 +58,7 @@
+ #include "backends/meta-stage-private.h"
+ #include "backends/meta-input-settings-private.h"
+ #include <clutter/x11/clutter-x11.h>
++#include "backends/meta-cursor-sprite-xcursor.h"
+ 
+ #ifdef HAVE_RANDR
+ #include <X11/extensions/Xrandr.h>

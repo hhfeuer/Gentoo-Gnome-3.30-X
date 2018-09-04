@@ -1,0 +1,13 @@
+diff -ur a/cogl/cogl/winsys/cogl-winsys-glx.c b/cogl/cogl/winsys/cogl-winsys-glx.c
+--- a/cogl/cogl/winsys/cogl-winsys-glx.c	2017-04-11 02:41:18.000000000 +0200
++++ b/cogl/cogl/winsys/cogl-winsys-glx.c	2018-08-07 12:08:34.319632413 +0200
+@@ -2272,7 +2272,8 @@
+ 	       * waits for the buffer swap to happen.)
+ 	       */
+               _cogl_winsys_wait_for_gpu (onscreen);
+-              start_threaded_swap_wait (onscreen, _cogl_winsys_get_vsync_counter (context));
++              if (have_counter)
++                start_threaded_swap_wait (onscreen, _cogl_winsys_get_vsync_counter (context));
+             }
+         }
+       else
