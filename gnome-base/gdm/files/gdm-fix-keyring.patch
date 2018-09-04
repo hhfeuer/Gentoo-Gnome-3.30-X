@@ -1,0 +1,12 @@
+diff -ur gdm-3.28.3.orig/data/pam-exherbo/gdm-password.pam gdm-3.28.3/data/pam-exherbo/gdm-password.pam
+--- gdm-3.28.3.orig/data/pam-exherbo/gdm-password.pam	2018-06-26 19:59:06.000000000 +0200
++++ gdm-3.28.3/data/pam-exherbo/gdm-password.pam	2018-08-15 18:00:06.312078228 +0200
+@@ -1,7 +1,7 @@
+ account  include  system-login
+ 
+ auth     substack system-login
+-auth     optional pam_gnome_keyring.so
++auth     optional pam_gnome_keyring.so auto_start
+ 
+ password required pam_deny.so
+ 
