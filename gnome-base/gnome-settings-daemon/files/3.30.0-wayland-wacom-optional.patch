@@ -1,0 +1,53 @@
+diff -ur gnome-settings-daemon-3.28.1.orig/meson.build gnome-settings-daemon-3.28.1/meson.build
+--- gnome-settings-daemon-3.28.1.orig/meson.build	2018-04-12 19:08:48.000000000 +0200
++++ gnome-settings-daemon-3.28.1/meson.build	2018-05-19 21:52:46.090924917 +0200
+@@ -135,6 +135,7 @@
+ 
+ # wacom (disabled for s390/s390x and non Linux platforms)
+ enable_wacom = host_is_linux_not_s390
++enable_wacom = get_option('wacom')
+ if enable_wacom
+   assert(enable_gudev, 'GUDev support is required for wacom support.')
+   libwacom_dep = dependency('libwacom', version: '>= 0.7')
+@@ -186,7 +187,7 @@
+ 
+ # Sharing plugin
+ enable_network_manager = get_option('network_manager')
+-assert(enable_network_manager or not host_is_linux, 'NetworkManager support is not optional on Linux platforms')
++# assert(enable_network_manager or not host_is_linux, 'NetworkManager support is not optional on Linux platforms')
+ if enable_network_manager
+   # network manager
+   libnm_dep = dependency('libnm', version: '>= 1.0')
+diff -ur gnome-settings-daemon-3.28.1.orig/meson_options.txt gnome-settings-daemon-3.28.1/meson_options.txt
+--- gnome-settings-daemon-3.28.1.orig/meson_options.txt	2018-04-12 19:08:48.000000000 +0200
++++ gnome-settings-daemon-3.28.1/meson_options.txt	2018-05-03 18:40:03.090171733 +0200
+@@ -8,3 +8,4 @@
+ option('rfkill', type: 'boolean', value: true, description: 'build with rfkill support (not optional on Linux platforms)')
+ option('smartcard', type: 'boolean', value: true, description: 'build with smartcard support')
+ option('wayland', type: 'boolean', value: true, description: 'build with Wayland support')
++option('wacom', type: 'boolean', value: true, description: 'build with Wacom support')
+diff -ur gnome-settings-daemon-3.28.1.orig/plugins/common/gsd-device-manager.c gnome-settings-daemon-3.28.1/plugins/common/gsd-device-manager.c
+--- gnome-settings-daemon-3.28.1.orig/plugins/common/gsd-device-manager.c	2018-04-12 19:08:48.000000000 +0200
++++ gnome-settings-daemon-3.28.1/plugins/common/gsd-device-manager.c	2018-05-03 19:55:10.728388736 +0200
+@@ -24,7 +24,6 @@
+ #include <string.h>
+ 
+ #include "gsd-device-manager-x11.h"
+-#include "gsd-device-manager-udev.h"
+ #include "gsd-common-enums.h"
+ #include "gnome-settings-bus.h"
+ 
+diff -ur gnome-settings-daemon-3.28.1.orig/plugins/common/meson.build gnome-settings-daemon-3.28.1/plugins/common/meson.build
+--- gnome-settings-daemon-3.28.1.orig/plugins/common/meson.build	2018-04-12 19:08:48.000000000 +0200
++++ gnome-settings-daemon-3.28.1/plugins/common/meson.build	2018-05-03 19:54:55.510448394 +0200
+@@ -42,8 +42,8 @@
+   ldflags += ['-Wl,-bundle_loader,@0@'.format(join_paths(), meson.build_root(), meson.project_name(), meson.project_name())]
+ endif
+ 
+-if enable_gudev
+-  sources += files('gsd-device-manager-udev.c')
++if enable_wayland
++  sources += files('gsd-device-manager-udev.h','gsd-device-manager-udev.c')
+ 
+   deps += gudev_dep
+ endif
