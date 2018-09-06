@@ -26,7 +26,7 @@ RDEPEND="
 # eautoreconf requires gnome-base/gnome-common
 DEPEND="${RDEPEND}
 	app-text/yelp-tools
-	>=dev-util/intltool-0.41.0
+	>=sys-auth/polkit-0.114
 	virtual/pkgconfig
 "
 
