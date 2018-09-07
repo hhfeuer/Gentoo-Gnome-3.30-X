@@ -1,0 +1,12 @@
+diff -ur gsettings-desktop-schemas-3.28.0.orig/schemas/org.gnome.desktop.screensaver.gschema.xml.in gsettings-desktop-schemas-3.28.0/schemas/org.gnome.desktop.screensaver.gschema.xml.in
+--- gsettings-desktop-schemas-3.28.0.orig/schemas/org.gnome.desktop.screensaver.gschema.xml.in	2017-11-14 11:42:15.000000000 +0100
++++ gsettings-desktop-schemas-3.28.0/schemas/org.gnome.desktop.screensaver.gschema.xml.in	2018-07-19 11:16:34.894280274 +0200
+@@ -95,7 +95,7 @@
+       </description>
+     </key>
+     <key name="picture-uri" type="s">
+-      <default>'file://@datadir@/backgrounds/gnome/adwaita-lock.jpg'</default>
++      <default>'file://@datadir@/backgrounds/gnome/adwaita-timed.xml'</default>
+       <summary>Picture URI</summary>
+       <description>
+         URI to use for the background image. Note that the backend only supports
