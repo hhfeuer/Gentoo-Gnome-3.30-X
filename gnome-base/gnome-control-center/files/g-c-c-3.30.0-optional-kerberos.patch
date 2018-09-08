@@ -1,0 +1,93 @@
+diff -ur gnome-control-center-3.30.0.orig/meson_options.txt gnome-control-center-3.30.0/meson_options.txt
+--- gnome-control-center-3.30.0.orig/meson_options.txt	2018-09-08 16:07:27.572888140 +0200
++++ gnome-control-center-3.30.0/meson_options.txt	2018-09-08 15:58:21.695208648 +0200
+@@ -7,4 +7,4 @@
+ option('networkmanager', type: 'boolean', value: true, description: 'build with networkmanager support')
+ option('wacom', type: 'boolean', value: true, description: 'build with wacom support')
+ option('bluetooth', type: 'boolean', value: true, description: 'build with bluetooth support')
+-
++option('kerberos', type: 'boolean', value: true, description: 'build with kerberos support')
+diff -ur gnome-control-center-3.30.0.orig/panels/user-accounts/meson.build gnome-control-center-3.30.0/panels/user-accounts/meson.build
+--- gnome-control-center-3.30.0.orig/panels/user-accounts/meson.build	2018-09-03 17:20:32.000000000 +0200
++++ gnome-control-center-3.30.0/panels/user-accounts/meson.build	2018-09-08 16:00:19.380505381 +0200
+@@ -156,21 +156,26 @@
+   'um-user-panel.c'
+ )
+ 
+-# Kerberos support
+-krb_dep = dependency('krb5', required: false)
+-assert(krb_dep.found(), 'kerberos libraries not found in your path')
+-
+ deps = common_deps + [
+   accounts_dep,
+   gdk_pixbuf_dep,
+   gnome_desktop_dep,
+   liblanguage_dep,
+-  krb_dep,
+   m_dep,
+   polkit_gobject_dep,
+   dependency('pwquality', version: '>= 1.2.2')
+ ]
+ 
++# Kerberos support
++enable_kerberos = get_option('kerberos')
++if enable_kerberos
++  krb_dep = dependency('krb5', required: false)
++  assert(krb_dep.found(), 'kerberos libraries not found in your path')
++  deps += krb_dep
++  config_h.set('HAVE_kerberos', enable_kerberos,
++             description: 'Define to 1 to enable kerberos support')
++endif
++
+ if enable_cheese
+   deps += cheese_deps
+ endif
+diff -ur gnome-control-center-3.30.0.orig/panels/user-accounts/um-realm-manager.c gnome-control-center-3.30.0/panels/user-accounts/um-realm-manager.c
+--- gnome-control-center-3.30.0.orig/panels/user-accounts/um-realm-manager.c	2018-09-03 17:20:32.000000000 +0200
++++ gnome-control-center-3.30.0/panels/user-accounts/um-realm-manager.c	2018-09-08 16:05:11.309728571 +0200
+@@ -22,7 +22,9 @@
+ 
+ #include "um-realm-manager.h"
+ 
++#ifdef HAVE_KERBEROS
+ #include <krb5/krb5.h>
++#endif
+ 
+ #include <glib.h>
+ #include <glib/gi18n.h>
+@@ -613,6 +615,7 @@
+         g_slice_free (LoginClosure, login);
+ }
+ 
++#ifdef HAVE_KERBEROS
+ static krb5_error_code
+ login_perform_kinit (krb5_context k5,
+                      const gchar *realm,
+@@ -676,6 +679,7 @@
+ 
+         return code;
+ }
++#endif /* HAVE_KERBEROS */
+ 
+ static void
+ kinit_thread_func (GTask *task,
+@@ -683,6 +687,7 @@
+                    gpointer task_data,
+                    GCancellable *cancellable)
+ {
++#ifdef HAVE_KERBEROS
+         LoginClosure *login = task_data;
+         krb5_context k5 = NULL;
+         krb5_error_code code;
+@@ -761,7 +766,10 @@
+ 
+         if (k5)
+                 krb5_free_context (k5);
+-
++#else /* HAVE_KERBEROS */
++        g_task_return_new_error (task, UM_REALM_ERROR, UM_REALM_ERROR_GENERIC,
++                                         _("gnome-control-center was built without kerberos support"));
++#endif
+         g_object_unref (task);
+ }
+ 

@@ -1,0 +1,139 @@
+diff -ur gnome-control-center-3.30.0.orig/meson.build gnome-control-center-3.30.0/meson.build
+--- gnome-control-center-3.30.0.orig/meson.build	2018-09-03 17:20:32.000000000 +0200
++++ gnome-control-center-3.30.0/meson.build	2018-09-08 15:50:19.978944997 +0200
+@@ -181,7 +181,8 @@
+ config_h.set('HAVE_WAYLAND', enable_wayland,
+              description: 'Define to 1 if Wayland is enabled')
+ 
+-if host_is_linux
++enable_networkmanager = get_option('networkmanager')
++if enable_networkmanager
+   # network manager
+   network_manager_deps = [
+     dependency('libnm', version: '>= 1.10.0'),
+@@ -189,38 +190,48 @@
+     dependency('mm-glib', version: '>= 0.7')
+   ]
+ endif
+-config_h.set('BUILD_NETWORK', host_is_linux,
++config_h.set('BUILD_NETWORK', enable_networkmanager,
+              description: 'Define to 1 to build the Network panel')
+-config_h.set('HAVE_NETWORK_MANAGER', host_is_linux,
++config_h.set('HAVE_NETWORK_MANAGER', enable_networkmanager,
+              description: 'Define to 1 if NetworkManager is available')
+ 
+-if host_is_linux_not_s390
++enable_bluetooth = get_option('bluetooth')
++enable_wacom = get_option('wacom')
++if host_is_linux_not_s390
+   # gnome-bluetooth
+-  gnome_bluetooth_dep = dependency('gnome-bluetooth-1.0', version: '>= 3.18.2')
++  if enable_bluetooth
++    gnome_bluetooth_dep = dependency('gnome-bluetooth-1.0', version: '>= 3.18.2')
++  endif
+ 
+   # Wacom
+-  assert(clutter_gtk_dep.found(), 'clutter-gtk library is required for wacom support, but is not available.')
++  if enable_wacom
++    assert(clutter_gtk_dep.found(), 'clutter-gtk library is required for wacom support, but is not available.')
+ 
+-  libwacom_dep = dependency('libwacom', version: '>= 0.7')
++    libwacom_dep = dependency('libwacom', version: '>= 0.7')
+ 
+-  wacom_deps = [
+-    clutter_gtk_dep,
+-    libwacom_dep,
+-    dependency('clutter-1.0', version: '>= 1.11.3'),
+-  ]
+-  config_h.set('HAVE_WACOM_3D_STYLUS', libwacom_dep.version().version_compare('>= 0.27'),
++    wacom_deps = [
++      clutter_gtk_dep,
++      libwacom_dep,
++      dependency('clutter-1.0', version: '>= 1.11.3'),
++    ]
++    config_h.set('HAVE_WACOM_3D_STYLUS', libwacom_dep.version().version_compare('>= 0.27'),
+                description: 'Define to 1 if libwacom provides definition for 3D styli')
++  else
++    wacom_deps = dependency('',version: '0', required: false)
++  endif
+ else
+   message('Bluetooth and Wacom panels will not be built (no USB support on this platform)')
+   message('Thunderbolt panel will not be built (not supported on this platform)')
++  enable_wacom=false
++  enable_bluetooth=false
+ endif
+-config_h.set('BUILD_BLUETOOTH', host_is_linux_not_s390,
++config_h.set('BUILD_BLUETOOTH', enable_bluetooth,
+              description: 'Define to 1 to build the Bluetooth panel')
+-config_h.set('HAVE_BLUETOOTH', host_is_linux_not_s390,
++config_h.set('HAVE_BLUETOOTH', enable_bluetooth,
+              description: 'Define to 1 if bluetooth support is available')
+-config_h.set('BUILD_WACOM', host_is_linux_not_s390,
++config_h.set('BUILD_WACOM', enable_wacom,
+              description: 'Define to 1 to build the Wacom panel')
+-config_h.set('HAVE_WACOM', host_is_linux_not_s390,
++config_h.set('HAVE_WACOM', enable_wacom,
+              description: 'Define to 1 if Wacom is supportted')
+ config_h.set('BUILD_THUNDERBOLT', host_is_linux_not_s390,
+              description: 'Define to 1 to build the Thunderbolt panel')
+@@ -275,11 +285,11 @@
+ output += '     gnome-session libexecdir ................... ' + gnome_session_libexecdir + '\n'
+ output += '     Optimized .................................. ' + control_center_optimized.to_string() + '\n'
+ output += ' Panels \n'
+-output += '     GNOME Bluetooth (Bluetooth panel) .......... ' + host_is_linux_not_s390.to_string() + '\n'
++output += '     GNOME Bluetooth (Bluetooth panel) .......... ' + enable_bluetooth.to_string() + '\n'
+ output += '     Cheese (Users panel webcam support) ........ ' + enable_cheese.to_string() + '\n'
+ output += '     IBus (Region panel IBus support) ........... ' + enable_ibus.to_string() + '\n'
+-output += '     NetworkManager (Network panel) ............. ' + host_is_linux.to_string() + '\n'
+-output += '     Wacom (Wacom tablet panel) ................. ' + host_is_linux_not_s390.to_string() + '\n'
++output += '     NetworkManager (Network panel) ............. ' + enable_networkmanager.to_string() + '\n'
++output += '     Wacom (Wacom tablet panel) ................. ' + enable_wacom.to_string() + '\n'
+ output += '     Wayland .................................... ' + enable_wayland.to_string() + '\n'
+ 
+-message(output)
+\ Kein Zeilenumbruch am Dateiende.
++message(output)
+diff -ur gnome-control-center-3.30.0.orig/meson_options.txt gnome-control-center-3.30.0/meson_options.txt
+--- gnome-control-center-3.30.0.orig/meson_options.txt	2018-09-03 17:20:32.000000000 +0200
++++ gnome-control-center-3.30.0/meson_options.txt	2018-09-08 15:50:49.256788048 +0200
+@@ -3,4 +3,8 @@
+ option('gnome_session_libexecdir', type: 'string', value: '', description: 'Directory for gnome-session\'s libexecdir')
+ option('ibus', type: 'boolean', value: true, description: 'build with IBus support')
+ option('tracing', type: 'boolean', value: false, description: 'add extra debugging information')
+-option('wayland', type: 'boolean', value: true, description: 'build with Wayland support')
+\ Kein Zeilenumbruch am Dateiende.
++option('wayland', type: 'boolean', value: true, description: 'build with Wayland support')
++option('networkmanager', type: 'boolean', value: true, description: 'build with networkmanager support')
++option('wacom', type: 'boolean', value: true, description: 'build with wacom support')
++option('bluetooth', type: 'boolean', value: true, description: 'build with bluetooth support')
++
+diff -ur gnome-control-center-3.30.0.orig/panels/meson.build gnome-control-center-3.30.0/panels/meson.build
+--- gnome-control-center-3.30.0.orig/panels/meson.build	2018-09-03 17:20:32.000000000 +0200
++++ gnome-control-center-3.30.0/panels/meson.build	2018-09-08 15:53:11.691003761 +0200
+@@ -21,16 +21,20 @@
+   'user-accounts'
+ ]
+ 
+-if host_is_linux
++if enable_networkmanager
+   panels += ['network']
+ endif
+ 
++if enable_bluetooth
++  panels += ['bluetooth']
++endif
++
++if enable_wacom
++  panels += ['wacom']
++endif
++
+ if host_is_linux_not_s390
+-  panels += [
+-    'bluetooth',
+-    'thunderbolt',
+-    'wacom'
+-  ]
++  panels += ['thunderbolt']
+ endif
+ 
+ panels_list = []
