@@ -130,8 +130,6 @@ src_configure() {
 #		$(use_enable cups) \
 #		$(use_enable gnome-online-accounts goa) \
 	local emesonargs=(
-		-Doption=disable-update-mimedb
-		-Doption=disable-static
 		-Ddocumentation=true
 		$(meson_use ibus)
 		$(meson_use v4l cheese)
