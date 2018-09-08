@@ -12,7 +12,7 @@ HOMEPAGE="https://wiki.gnome.org/Projects/GnomeShell"
 
 LICENSE="GPL-2+ LGPL-2+"
 SLOT="0"
-IUSE="+browser-extension +ibus +networkmanager nsplugin -openrc-force"
+IUSE="+browser-extension +ibus +networkmanager +bluetooth nsplugin -openrc-force"
 REQUIRED_USE="${PYTHON_REQUIRED_USE}"
 
 KEYWORDS="amd64 ~ia64 ~ppc ~ppc64 ~x86"
@@ -116,15 +116,11 @@ DEPEND="${COMMON_DEPEND}
 PATCHES=(
 	# Change favorites defaults, bug #479918
 	"${FILESDIR}"/${PN}-3.22.0-defaults.patch
-#        "${FILESDIR}"/3.28.3-handle-no-window-case.patch
         "${FILESDIR}"/tweener-Save-handlers-on-target-and-remove-them-on-destro.patch
-#        "${FILESDIR}"/dnd-Nullify-_dragActor-after-we-ve-destroyed-it-and-avoid.patch
         "${FILESDIR}"/workspaceThumbnail-Disconnect-from-window-signals-on-dest.patch
-#        "${FILESDIR}"/workspace-Disconnect-from-window-signals-on-destruction.patch
         "${FILESDIR}"/messageList-stop-syncing-if-closeButton-has-been-destroye.patch
         "${FILESDIR}"/automountManager-remove-allowAutorun-expire-timeout-on-vo.patch
         "${FILESDIR}"/workaround_crasher_fractional_scaling.patch
-#        "${FILESDIR}"/defer-position-changed-till-we-have-a-rect.patch
 )
 src_configure() {
 	local emesonargs=(
