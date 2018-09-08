@@ -73,8 +73,8 @@ DEPEND="${COMMON_DEPEND}
 
 src_configure() {
 	local emesonargs=(
-		-Ddeprecation-flags=false \
-                -Dsession-selector=true \
+		-Ddeprecation_flags=false \
+                -Dsession_selector=true \
 		-Dsystemd=true \
 		-Dsystemd_journal=true \
 		-Dconsolekit=false \
