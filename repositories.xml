@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE repositories SYSTEM "/dtd/repositories.dtd">
+<repositories xmlns="" version="1.0">
+  <repo quality="experimental" status="unofficial">
+    <name><![CDATA[Gnome-3-30-X]]></name>
+    <description lang="en"><![CDATA[Gnome 3.30 on Xorg Overlay]]></description>
+    <homepage>https://github.com/hhfeuer/Gentoo-Gnome-3.28-X</homepage>
+    <owner type="person">
+      <email>hhfeuer@gmx.de</email>
+      <name><![CDATA[hhfeuer]]></name>
+    </owner>
+    <source type="git">git://github.com/hhfeuer/Gentoo-Gnome-3.30-X.git</source>
+    <feed>https://github.com/hhfeuer/Gentoo-Gnome-3.30-X/commits/master.atom</feed>
+  </repo>
+</repositories>
