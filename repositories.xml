@@ -4,7 +4,7 @@
   <repo quality="experimental" status="unofficial">
     <name><![CDATA[Gnome-3-30-X]]></name>
     <description lang="en"><![CDATA[Gnome 3.30 on Xorg Overlay]]></description>
-    <homepage>https://github.com/hhfeuer/Gentoo-Gnome-3.28-X</homepage>
+    <homepage>https://github.com/hhfeuer/Gentoo-Gnome-3.30-X</homepage>
     <owner type="person">
       <email>hhfeuer@gmx.de</email>
       <name><![CDATA[hhfeuer]]></name>
