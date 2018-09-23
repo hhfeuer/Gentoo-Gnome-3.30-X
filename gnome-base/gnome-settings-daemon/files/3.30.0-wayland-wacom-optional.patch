@@ -26,17 +26,6 @@ diff -ur gnome-settings-daemon-3.28.1.orig/meson_options.txt gnome-settings-daem
  option('smartcard', type: 'boolean', value: true, description: 'build with smartcard support')
  option('wayland', type: 'boolean', value: true, description: 'build with Wayland support')
 +option('wacom', type: 'boolean', value: true, description: 'build with Wacom support')
-diff -ur gnome-settings-daemon-3.28.1.orig/plugins/common/gsd-device-manager.c gnome-settings-daemon-3.28.1/plugins/common/gsd-device-manager.c
---- gnome-settings-daemon-3.28.1.orig/plugins/common/gsd-device-manager.c	2018-04-12 19:08:48.000000000 +0200
-+++ gnome-settings-daemon-3.28.1/plugins/common/gsd-device-manager.c	2018-05-03 19:55:10.728388736 +0200
-@@ -24,7 +24,6 @@
- #include <string.h>
- 
- #include "gsd-device-manager-x11.h"
--#include "gsd-device-manager-udev.h"
- #include "gsd-common-enums.h"
- #include "gnome-settings-bus.h"
- 
 diff -ur gnome-settings-daemon-3.28.1.orig/plugins/common/meson.build gnome-settings-daemon-3.28.1/plugins/common/meson.build
 --- gnome-settings-daemon-3.28.1.orig/plugins/common/meson.build	2018-04-12 19:08:48.000000000 +0200
 +++ gnome-settings-daemon-3.28.1/plugins/common/meson.build	2018-05-03 19:54:55.510448394 +0200
@@ -47,7 +36,7 @@ diff -ur gnome-settings-daemon-3.28.1.orig/plugins/common/meson.build gnome-sett
 -if enable_gudev
 -  sources += files('gsd-device-manager-udev.c')
 +if enable_wayland
-+  sources += files('gsd-device-manager-udev.h','gsd-device-manager-udev.c')
++  sources += files('gsd-device-manager-udev.c')
  
    deps += gudev_dep
  endif
