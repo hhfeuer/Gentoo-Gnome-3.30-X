@@ -118,8 +118,6 @@ PATCHES=(
 	"${FILESDIR}"/${PN}-3.22.0-defaults.patch
         "${FILESDIR}"/tweener-Save-handlers-on-target-and-remove-them-on-destro.patch
         "${FILESDIR}"/workspaceThumbnail-Disconnect-from-window-signals-on-dest.patch
-        "${FILESDIR}"/messageList-stop-syncing-if-closeButton-has-been-destroye.patch
-        "${FILESDIR}"/automountManager-remove-allowAutorun-expire-timeout-on-vo.patch
         "${FILESDIR}"/workaround_crasher_fractional_scaling.patch
 )
 src_configure() {

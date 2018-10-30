@@ -5,7 +5,7 @@ EAPI=6
 GNOME2_LA_PUNT="yes"
 PYTHON_COMPAT=( python{2_7,3_4,3_5,3_6} )
 
-inherit gnome2 python-any-r1
+inherit bash-completion-r1 gnome2 meson python-any-r1
 
 DESCRIPTION="A framework for easy media discovery and browsing"
 HOMEPAGE="https://wiki.gnome.org/Projects/Grilo"
@@ -53,6 +53,7 @@ RDEPEND="
 	vimeo? (
 		>=dev-libs/totem-pl-parser-3.4.1 )
 "
+
 DEPEND="${RDEPEND}
 	app-text/docbook-xml-dtd:4.5
 	app-text/yelp-tools
@@ -73,60 +74,25 @@ pkg_setup() {
 	use upnp-av && use test && python-any-r1_pkg_setup
 }
 
-src_prepare () {
-	gnome2_src_prepare
-#	sed -e "s:GETTEXT_PACKAGE=grilo-plugins$:GETTEXT_PACKAGE=grilo-plugins-${SLOT}:" \
-#		-i configure.ac configure || die "sed configure.ac configure failed"
-}
-
-# FIXME: some unittests required python-dbusmock
 src_configure() {
-	# --enable-debug only changes CFLAGS, useless for us
-	# Plugins
-	# shoutcast seems to be broken
-	gnome2_src_configure \
-		--disable-static \
-		--disable-debug \
-		--disable-uninstalled \
-		--enable-bookmarks \
-		--enable-filesystem \
-		--enable-gravatar \
-		--enable-jamendo \
-		--enable-local-metadata \
-		--enable-magnatune \
-		--enable-metadata-store \
-		--enable-podcasts \
-		--enable-raitv \
-		--disable-shoutcast \
-		--enable-tmdb \
-		$(use_enable chromaprint) \
-		$(use_enable daap dmap) \
-		$(use_enable dvd optical-media) \
-		$(use_enable flickr) \
-		$(use_enable freebox) \
-		$(use_enable gnome-online-accounts goa) \
-		$(use_enable lua lua-factory) \
-		$(use_enable subtitles opensubtitles) \
-		$(use_enable thetvdb) \
-		$(use_enable tracker) \
-		$(use_enable upnp-av dleyna) \
-		$(use_enable vimeo) \
-		$(use_enable youtube)
+	local emesonargs=(
+		$(meson_use chromaprint)
+        $(meson_use daap dmap)
+        $(meson_use dvd optical-media)
+        $(meson_use flickr)
+        $(meson_use freebox)
+        $(meson_use gnome-online-accounts goa)
+        $(meson_use lua lua-factory)
+        $(meson_use subtitles opensubtitles)
+        $(meson_use thetvdb)
+        $(meson_use tracker)
+        $(meson_use upnp-av dleyna)
+        $(meson_use vimeo)
+        $(meson_use youtube)
+	)
+	meson_src_configure
 }
 
 src_install() {
-	if use examples; then
-		docinto examples
-		doins help/examples/*.c
-	fi
-
-	gnome2_src_install \
-		DOC_MODULE_VERSION=${SLOT%/*} \
-		HELP_ID="grilo-plugins-${SLOT%/*}" \
-		HELP_MEDIA=""
-
-	# The above doesn't work and collides with 0.2 slot
-	mv "${ED}"/usr/share/help/C/examples/example-tmdb{,-0.3}.c || die
-	mv "${ED}"/usr/share/help/C/grilo-plugins/legal{,-0.3}.xml || die
-	mv "${ED}"/usr/share/help/C/grilo-plugins/grilo-plugins{,-0.3}.xml || die
+	meson_src_install
 }
