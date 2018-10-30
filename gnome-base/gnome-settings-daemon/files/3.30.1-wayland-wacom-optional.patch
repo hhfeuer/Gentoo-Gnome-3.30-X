@@ -1,0 +1,26 @@
+--- a/meson.build	2018-10-30 00:37:07.663696524 +0100
++++ b/meson.build	2018-10-30 00:37:58.436479291 +0100
+@@ -139,6 +139,7 @@
+ 
+ # wacom (disabled for s390/s390x and non Linux platforms)
+ enable_wacom = host_is_linux_not_s390
++enable_wacom = get_option('wacom')
+ if enable_wacom
+   assert(enable_gudev, 'GUDev support is required for wacom support.')
+   libwacom_dep = dependency('libwacom', version: '>= 0.7')
+@@ -190,7 +191,7 @@
+ 
+ # Sharing plugin
+ enable_network_manager = get_option('network_manager')
+-assert(enable_network_manager or not host_is_linux, 'NetworkManager support is not optional on Linux platforms')
++# assert(enable_network_manager or not host_is_linux, 'NetworkManager support is not optional on Linux platforms')
+ if enable_network_manager
+   # network manager
+   libnm_dep = dependency('libnm', version: '>= 1.0')
+--- a/meson_options.txt	2018-10-30 00:38:19.100912301 +0100
++++ b/meson_options.txt	2018-10-30 00:38:49.312531243 +0100
+@@ -8,3 +8,4 @@
+ option('rfkill', type: 'boolean', value: true, description: 'build with rfkill support (not optional on Linux platforms)')
+ option('smartcard', type: 'boolean', value: true, description: 'build with smartcard support')
+ option('wayland', type: 'boolean', value: true, description: 'build with Wayland support')
++option('wacom', type: 'boolean', value: true, description: 'build with Wacom support')
