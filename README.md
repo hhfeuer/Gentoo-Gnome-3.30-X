@@ -63,6 +63,7 @@ needs package.unmask:
 
 package.keywords/accept_keywords:
 
+	=x11-libs/gtk+-3.24.1 ~amd64
 	=media-libs/grilo-0.3.6 ~amd64
 	=media-libs/babl-0.1.56 ~amd64
 	=media-libs/gegl-0.4.8-r1 ~amd64
@@ -73,7 +74,6 @@ package.keywords/accept_keywords:
 	=sys-fs/udisks-2.8.0 ~amd64
 	=sys-auth/polkit-0.115-r1 ~amd64
 	=sys-libs/libblockdev-2.19 ~amd64
-	=media-plugins/grilo-plugins-0.3.5 ~amd64
 
 needs package.use:
 
