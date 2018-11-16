@@ -81,10 +81,6 @@ pkg_setup() {
 	fi
 }
 
-src_unpack() {
-	git-r3_src_unpack
-	default
-}
 src_prepare() {
 	# Prevent build failure in stage3 where pkgconfig is not available, bug #481056
 	mv -f "${WORKDIR}"/pkg-config-*/pkg.m4 "${S}"/m4macros/ || die
