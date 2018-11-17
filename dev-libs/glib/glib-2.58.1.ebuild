@@ -41,7 +41,7 @@ RDEPEND="
 	fam? ( >=virtual/fam-0-r1[${MULTILIB_USEDEP}] )
 	utils? (
 		${PYTHON_DEPS}
-		>=dev-util/gdbus-codegen-${PV}[${PYTHON_USEDEP}]
+		>=dev-util/gdbus-codegen-${PV}
 		virtual/libelf:0=
 	)
 "
