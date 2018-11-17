@@ -54,7 +54,7 @@ DEPEND="${RDEPEND}
 	test? (
 		sys-devel/gdb
 		${PYTHON_DEPS}
-		>=dev-util/gdbus-codegen-${PV}[${PYTHON_USEDEP}]
+		>=dev-util/gdbus-codegen-${PV}
 		>=sys-apps/dbus-1.2.14 )
 	!<dev-util/gtk-doc-1.15-r2
 "
