@@ -18,6 +18,7 @@ KEYWORDS="~alpha amd64 ~arm ~ia64 ~ppc ~ppc64 ~sparc ~x86 ~x86-fbsd amd64-linux 
 # cairo used in eggtreemultidnd.c
 # pango used in fr-window
 RDEPEND="
+	|| ( >=dev-util/meson-0.48.1 <dev-util/meson-0.48.0 )
 	>=app-arch/libarchive-3:=
 	>=dev-libs/glib-2.36:2
 	>=dev-libs/json-glib-0.14
