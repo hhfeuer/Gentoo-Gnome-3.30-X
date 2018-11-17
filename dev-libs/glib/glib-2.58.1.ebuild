@@ -1,3 +1,4 @@
+
 # Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
@@ -117,8 +118,6 @@ src_prepare() {
 
 
 	gnome-meson_src_prepare
-
-	epunt_cxx
 }
 
 multilib_src_configure() {
@@ -157,8 +156,8 @@ multilib_src_configure() {
 	# libelf used only by the gresource bin ??
 	# FIXME enable docs if possible.
 
-	use static-libs && myconf="-Ddefault_library='static'"
-	use debug && myconf="$myconf -Dbuildtype='debug'"
+	use static-libs && myconf="-Ddefault_library=static"
+	use debug && myconf="$myconf -Dbuildtype=debug"
 
 	gnome-meson_src_configure \
 		${myconf} \
@@ -166,6 +165,7 @@ multilib_src_configure() {
 		$(meson_use systemtap enable-dtrace) \
 		$(meson_use systemtap enable-systemtap) \
 		-Dselinux=$(usex selinux true false) \
+                -Dxattr=$(usex xattr true false) \
 		-Dwith-pcre=system \
 		-Dwith-docs=no \
 		-Dwith-man=yes
