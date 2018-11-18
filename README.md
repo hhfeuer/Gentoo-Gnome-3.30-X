@@ -69,7 +69,6 @@ package.keywords/accept_keywords:
 	=media-libs/gegl-0.4.8-r1 ~amd64
 	=app-text/gspell-1.6.1 ~amd64
 	=dev-util/meson-0.47.1 ~amd64
-	=sys-power/upower-0.99.7 ~amd64
 	=dev-lang/spidermonkey-52.9.1_pre1 ~amd64
 	=sys-fs/udisks-2.8.0 ~amd64
 	=sys-auth/polkit-0.115-r1 ~amd64
