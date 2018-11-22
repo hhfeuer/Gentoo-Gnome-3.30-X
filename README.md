@@ -63,6 +63,7 @@ needs package.unmask:
 
 package.keywords/accept_keywords:
 
+	=gnome-base/libgtop-2.38.0 ~amd64
 	=x11-libs/gtk+-3.24.1 ~amd64
 	=media-libs/grilo-0.3.6 ~amd64
 	=media-libs/babl-0.1.56 ~amd64
