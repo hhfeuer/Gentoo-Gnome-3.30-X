@@ -12,7 +12,7 @@ HOMEPAGE="https://wiki.gnome.org/Projects/Tracker"
 
 LICENSE="GPL-2+ LGPL-2.1+"
 SLOT="0/100"
-IUSE="elibc_glibc gstreamer +miner-fs seccomp test cue exif ffmpeg
+IUSE="elibc_glibc gstreamer +miner-fs seccomp test exif ffmpeg
  flac gif gsf gstreamer gtk iptc +iso +jpeg libav mp3 pdf ps
  playlist rss +tiff upnp-av upower +vorbis +xml xmp xps"
 
@@ -40,7 +40,7 @@ RDEPEND="
 	seccomp? ( >=sys-libs/libseccomp-2.0 )
 	virtual/imagemagick-tools[png,jpeg?]
 
-	cue? ( media-libs/libcue )
+	media-libs/libcue
 	elibc_glibc? ( >=sys-libs/glibc-2.12 )
 	exif? ( >=media-libs/libexif-0.6 )
 	ffmpeg? (
